@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Equipments</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div style="margin-bottom: 20px;">
+        <a href="/my-loans">
+            <button>📋 ההשאלות שלי</button>
+        </a>
+
+        <a href="/add-equipment">
+            <button>➕ הוספת מוצר חדש</button>
+        </a>
+
+        <a href="/logout">
+            <button>🚪 התנתקות</button>
+        </a>
+    </div>
+    <h1>Medical Equipment List</h1>
+
+    <% if (equipments.length===0) { %>
+        <p>No equipment found.</p>
+        <% } else { %>
+            <ul>
+                <% equipments.forEach(eq=> { %>
+                    <li>
+                        <div class="equipment-card">
+                            <img src="<%= eq.image %>" alt="<%= eq.name %>" class="equipment-img">
+                            <strong>
+                                <%= eq.name %>
+                            </strong><br>
+                            Category: <%= eq.category %><br>
+                                Available: <%= eq.availableQuantity %>
+                                    <form action="/borrow" method="POST" class="borrow-form">
+                                        <input type="hidden" name="equipmentId" value="<%= eq._id %>">
+
+                                        <label>
+                                            Quantity:
+                                            <input type="number" name="quantity" value="1" min="1"
+                                                max="<%= eq.availableQuantity %>" required>
+                                        </label>
+
+                                        <button type="submit" <%=eq.availableQuantity===0 ? "disabled" : "" %>>
+                                            Borrow
+                                        </button>
+                                    </form>
+                        </div>
+                    </li>
+                    <hr>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+</body>
+
+</html>

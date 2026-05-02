@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Equipment</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Add Equipment to Inventory</h1>
+
+<form method="POST" action="/equipments/add">
+
+  <label>Select equipment:</label>
+  <select name="equipmentId" required>
+    <% equipments.forEach(eq => { %>
+      <option value="<%= eq._id %>">
+        <%= eq.name %>
+      </option>
+    <% }) %>
+  </select>
+
+  <br><br>
+
+  <label>Quantity:</label>
+  <input type="number" name="quantity" min="1" value="1" required>
+
+  <br><br>
+
+  <button type="submit">Add to inventory</button>
+
+</form>
+
+</body>
+</html>

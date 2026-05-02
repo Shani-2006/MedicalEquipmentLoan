@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>My Loans</title>
+</head>
+<body>
+
+<h1>📋 ההשאלות שלי</h1>
+
+<a href="/equipments">
+  <button>⬅ חזרה לרשימת המוצרים</button>
+</a>
+
+<hr>
+
+<%
+  // מסננים רק השאלות פעילות (לא הוחזרו)
+  const activeLoans = loans.filter(loan => !loan.returned);
+%>
+
+<% if (activeLoans.length === 0) { %>
+  <p>אין השאלות פעילות</p>
+<% } else { %>
+  <ul>
+    <% activeLoans.forEach(loan => { %>
+      <li>
+        <strong><%= loan.equipment.name %></strong><br>
+        כמות: <%= loan.quantity %><br>
+        סטטוס: פעיל
+
+        <form action="/return-loan" method="POST" style="margin-top:10px">
+          <input type="hidden" name="loanId" value="<%= loan._id %>">
+          <button type="submit">החזר</button>
+        </form>
+      </li>
+      <hr>
+    <% }) %>
+  </ul>
+<% } %>
+
+</body>
+</html>

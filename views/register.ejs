@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+  <meta charset="UTF-8">
+  <title>הרשמה</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="card">
+
+      <h1>הרשמה למערכת</h1>
+      <p>מלאי פרטים ליצירת משתמש חדש</p>
+
+      <form id="registerForm">
+
+        <label>אימייל</label><br>
+        <input type="email" name="email" required class="input"><br><br>
+
+        <label>סיסמה</label><br>
+        <input type="password" name="password" required class="input"><br><br>
+
+        <button type="submit">הרשמה</button>
+
+        <p id="errorMsg" style="color:red; margin-top:10px;"></p>
+      </form>
+
+      <hr style="margin:30px 0">
+
+      <p>
+        כבר יש לך חשבון?
+        <a href="/login">להתחברות</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("registerForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      errorMsg.textContent = "";
+
+      const email = form.email.value;
+      const password = form.password.value;
+
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (res.status === 409) {
+          window.location.href = "/login";
+          return;
+        }
+
+        if (!res.ok) {
+          errorMsg.textContent = "אירעה שגיאה, נסי שוב";
+          return;
+        }
+
+        window.location.href = "/login";
+
+      } catch (err) {
+        errorMsg.textContent = "שגיאת שרת, נסי שוב מאוחר יותר";
+      }
+    });
+  </script>
+
+</body>
+
+</html>

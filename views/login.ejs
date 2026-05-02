@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+  <meta charset="UTF-8">
+  <title>התחברות</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="card">
+
+      <h1>התחברות למערכת</h1>
+      <p>אנא הזינו את פרטי המשתמש שלכם</p>
+
+      <form id="loginForm">
+
+        <label>אימייל</label><br>
+        <input type="email" name="email" required class="input"><br><br>
+
+        <label>סיסמה</label><br>
+        <input type="password" name="password" required class="input"><br><br>
+
+        <button type="submit">התחברות</button>
+
+
+        <p id="errorMsg" style="color:red; margin-top:10px;"></p>
+      </form>
+
+      <hr style="margin:30px 0">
+
+      <p>
+        אין לך חשבון?
+        <a href="/register">להרשמה</a>
+      </p>
+
+    </div>
+  </div>
+
+<script>
+  const form = document.getElementById("loginForm");
+  const errorMsg = document.getElementById("errorMsg");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (res.status === 401) {
+    
+        window.location.href = "/register";
+        return;
+      }
+
+      if (!res.ok) {
+        errorMsg.textContent = "שגיאה כללית";
+        return;
+      }
+
+      
+      window.location.href = "/equipments";
+
+    } catch (err) {
+      errorMsg.textContent = "שגיאת שרת";
+    }
+  });
+</script>
+</body>
+
+</html>
